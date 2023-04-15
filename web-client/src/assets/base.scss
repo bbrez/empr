@@ -1,0 +1,14 @@
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+
+$font-family-sans-serif: "Open Sans", sans-serif;
+$primary: $indigo;
+$secondary: $pink;
+$tertiary: #3cdff0;
+
+$theme-colors: map-merge($map1: $theme-colors, $map2: (
+    "primary": $primary,
+    "secondary": $secondary
+    ));
+
+@import "bootstrap/scss/bootstrap";
