@@ -1,7 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import LoginView from '../views/LoginView.vue';
-import DashboardView from '../views/DashboardView.vue';
+
+import ManagerDashboardView from '../views/ManagerDashboardView.vue';
+import AdminDashboardView from '../views/AdminDashboardView.vue';
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -25,9 +27,18 @@ const router = createRouter({
     },
 
     {
+      path: '/manager',
+      name: 'Manager-Panel',
+      component: ManagerDashboardView,
+      meta: {
+        requiresAuth: true,
+        roles: ['manager', 'admin'],
+      }
+    },
+    {
       path: '/admin',
       name: 'Admin-Panel',
-      component: DashboardView,
+      component: AdminDashboardView,
       meta: {
         requiresAuth: true,
         roles: ['admin'],

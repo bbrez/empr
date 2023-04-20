@@ -40,9 +40,8 @@ const passwordActivated = computed(() => {
     return showPwHint.value;
 });
 
-
 function submitForm() {
-    api.register(user).then(() => {
+    api.user.register(user).then(() => {
         router.push('/login');
     }).catch((err) => {
         if (err.response.status === 409) {

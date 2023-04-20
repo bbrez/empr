@@ -16,6 +16,9 @@
                     Online: {{ 123 }}
                 </div>
                 <div class="col-12 mb-3">
+                    <button class="btn btn-outline-primary">
+                        Registrar Usuário
+                    </button>
                     <button class="btn btn-primary">
                         Ver Mais
                     </button>
