@@ -1,7 +1,7 @@
 import { Prisma, PrismaClient } from ".prisma/client";
 import { comparePassword, hashPassword } from "../crypto";
 import { UserRole } from "@prisma/client";
-import { createToken } from "../authentication";
+import { createAccessToken } from "../middleware/authentication";
 
 const prisma = new PrismaClient();
 
@@ -52,7 +52,7 @@ export namespace UserService {
             throw new Error('Invalid email or password');
         }
 
-        const token = createToken(user);
+        const token = createAccessToken(user);
 
         return token;
     }

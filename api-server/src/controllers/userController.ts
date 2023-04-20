@@ -5,6 +5,11 @@ export namespace UserController {
     export const createUser = async (req: Request, res: Response) => {
         const { firstName, lastName, email, password } = req.body;
 
+        if (!firstName || !lastName || !email || !password) {
+            res.status(400).json({ error: "Missing required fields" });
+            return;
+        }
+
         const user = await UserService.createUser({
             firstName,
             lastName,
@@ -13,10 +18,16 @@ export namespace UserController {
         });
 
         res.status(201).json(user);
+        return;
     }
 
     export const createUserWithRole = async (req: Request, res: Response) => {
         const { firstName, lastName, email, password, role } = req.body;
+
+        if (!firstName || !lastName || !email || !password || !role) {
+            res.status(400).json({ error: "Missing required fields" });
+            return;
+        }
 
         const user = await UserService.createUserWithRole({
             firstName,
@@ -27,11 +38,26 @@ export namespace UserController {
         });
 
         res.status(201).json(user);
+        return;
     }
 
     export const login = async (req: Request, res: Response) => {
         const { email, password } = req.body;
 
-        UserService.login({ email, password });
+        if (!email || !password) {
+            res.status(400).json({ error: "Missing required fields" });
+            return;
+        }
+
+        let token: string | null = null;
+        try {
+            token = await UserService.login({ email, password });
+        } catch (err: any) {
+            res.status(401).json({ error: err.message });
+            return;
+        }
+
+        res.status(200).json({ message: "Login successful", token });
+        return;
     }
 }

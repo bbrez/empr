@@ -1,22 +1,24 @@
 import { env } from "process";
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
 
 import { PrismaClient, User } from "@prisma/client";
-import { comparePassword } from "./crypto";
 
-const jwtSecret = env?.JWT_SECRET || "secret";
-const tokenExpiration = "24h";
+const accessSecret = env?.ACCESS_JWT_SECRET || "secret";
+const refreshSecret = env?.REFRESH_JWT_SECRET || "terces";
 
 const prisma = new PrismaClient();
 
-export function createToken(user: any) {
-    return jwt.sign({ user }, jwtSecret, { expiresIn: tokenExpiration })
+export function createAccessToken(user: any) {
+    return jwt.sign({ user }, accessSecret, { expiresIn: '1h' })
+}
+
+export function createRefreshToken(user: any) {
+    return jwt.sign({ user }, refreshSecret, { expiresIn: '7d' })
 }
 
 export function verifyToken(token: string) {
-    return jwt.verify(token, jwtSecret) as User;
+    return jwt.verify(token, accessSecret) as User;
 }
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
@@ -28,7 +30,7 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
     }
 
     try {
-        const decoded = jwt.verify(token, jwtSecret);
+        const decoded = jwt.verify(token, accessSecret);
         req.body.user = decoded;
         next()
     } catch (err) {
@@ -47,35 +49,11 @@ export function optionalAuth(req: Request, res: Response, next: NextFunction) {
     }
 
     try {
-        const decoded = jwt.verify(token, jwtSecret);
+        const decoded = jwt.verify(token, accessSecret);
         req.body.user = decoded;
         next();
     } catch (err) {
         req.body.user = null;
         next();
     }
-}
-
-export async function loginHandler(req: Request, res: Response) {
-    const { email, password } = req.body;
-
-    const user = await prisma.user.findUnique({
-        where: {
-            email,
-        },
-    });
-
-    if (!user) {
-        return res.status(404).json({ error: "User not found" });
-    }
-
-    const validPassword = await comparePassword(password, user.password);
-
-    if (!validPassword) {
-        return res.status(401).json({ error: "Authentication failed: Wrong password" });
-    }
-
-    const token = createToken(user);
-
-    res.json({ token });
 }
