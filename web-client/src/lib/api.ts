@@ -33,10 +33,5 @@ export const api = {
             return api_client.post("/users/login", user);
         },
 
-        refreshToken(refreshToken: string) {
-            return api_client.post("/users/refresh-token", {
-                refresh_token: refreshToken,
-            });
-        }
     }
 };
