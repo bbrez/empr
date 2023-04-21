@@ -4,6 +4,7 @@ import LoginView from '../views/LoginView.vue';
 
 import ManagerDashboardView from '../views/ManagerDashboardView.vue';
 import AdminDashboardView from '../views/AdminDashboardView.vue';
+import { useAuthStore } from '@/stores/authStore';
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -16,6 +17,11 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+      path: '/',
+      name: 'Home',
+      redirect: '/dashboard',
+    },
+    {
       path: '/login',
       name: 'login',
       component: LoginView,
@@ -24,6 +30,22 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: () => import('../views/RegisterView.vue'),
+    },
+
+    {
+      path: '/dashboard',
+      redirect: to => {
+        const authStore = useAuthStore();
+        if (authStore.userData.role.toLowerCase() === 'manager') {
+          return '/manager';
+        } else if (authStore.userData.role.toLowerCase() === 'admin') {
+          return '/admin';
+        }
+        return '/';
+      },
+      meta: {
+        requiresAuth: true,
+      }
     },
 
     {
@@ -47,32 +69,46 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    const user = localStorage.getItem('user');
+router.beforeEach((to, from) => {
+  // console.log('to', to);
+  // console.log('from', from);
 
-    if (!user) {
-      // Se não estiver logado, redireciona para a página de login
-      next({ name: 'Home', query: { redirect: to.fullPath } });
-      return;
-    }
+  // const authStore = useAuthStore();
 
-    // Se a rota necessita de uma role específica, verifica se o usuário tem a role necessária
-    if (to.meta.roles) {
-      const userRole = JSON.parse(user).role;
+  // // Se o usuario estiver logado e tentar acessar a página de login, redireciona para a página inicial
+  // if (to.name === 'login') {
 
-      // Se o usuário tem a role necessária, prossegue para a rota
-      if (to.meta.roles.includes(userRole)) {
-        next();
+  //   if (authStore.isAuthenticated) {
+  //     next({ name: 'Home' });
+  //     return;
+  //   }
+  // }
 
-      } else { // Se o usuário não tem a role necessária, redireciona para a página de login
-        next({ name: 'Home', query: { redirect: to.fullPath } });
+  // if (to.matched.some(record => record.meta.requiresAuth)) {
 
-      }
-    }
-  }
+  //   if (!authStore.isAuthenticated) {
+  //     // Se não estiver logado, redireciona para a página de login
+  //     next({ name: 'Home', query: { redirect: to.fullPath } });
+  //     return;
+  //   }
 
-  next();
+  //   // Se a rota necessita de uma role específica, verifica se o usuário tem a role necessária
+  //   if (to.meta.roles) {
+  //     const userRole = authStore.userData.role;
+
+  //     // Se o usuário tem a role necessária, prossegue para a rota
+  //     if (to.meta.roles.includes(userRole)) {
+  //       next();
+  //       return;
+
+  //     } else { // Se o usuário não tem a role necessária, redireciona para a página de login
+  //       next({ name: 'Home', query: { redirect: to.fullPath } });
+  //       return;
+  //     }
+  //   }
+  // }
+
+  return true;
 });
 
 export default router

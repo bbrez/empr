@@ -49,15 +49,20 @@ export namespace UserController {
             return;
         }
 
-        let token: string | null = null;
+        let userAndToken: any = null;
         try {
-            token = await UserService.login({ email, password });
+            userAndToken = await UserService.login({ email, password });
         } catch (err: any) {
             res.status(401).json({ error: err.message });
             return;
         }
 
-        res.status(200).json({ message: "Login successful", token });
+        if (!userAndToken) {
+            res.status(500).json({ error: "Server error" });
+            return;
+        }
+
+        res.status(200).json({ message: "Login successful", ...userAndToken });
         return;
     }
 }

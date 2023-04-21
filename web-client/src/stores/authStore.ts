@@ -1,20 +1,46 @@
 import { defineStore } from 'pinia';
 import { api } from '../lib/api';
 import { computed, ref } from 'vue';
+import CryptoJS from 'crypto-js';
+import { useLocalStorage } from '@vueuse/core';
+
+const secret = '321atatab';
 
 export const useAuthStore = defineStore('auth', () => {
-  const accessToken = ref<string | null>(null);
-  const refreshToken = ref<string | null>(null);
+  const accessToken = useLocalStorage('token', '', {
+    listenToStorageChanges: true,
+    serializer: {
+      read: (value) => CryptoJS.AES.decrypt(value, secret).toString(CryptoJS.enc.Utf8),
+      write: (value) => {
+        if (!value) return '';
+        return CryptoJS.AES.encrypt(value, secret).toString();
+      }
+    }
+  });
 
-  const isAuthenticated = computed(() => !!accessToken.value);
+  const userData = useLocalStorage('user', {}, {
+    listenToStorageChanges: true,
+    serializer: {
+      read: (value) => JSON.parse(CryptoJS.AES.decrypt(value, secret).toString(CryptoJS.enc.Utf8)),
+      write: (value) => {
+        if (!value) return '';
+        return CryptoJS.AES.encrypt(JSON.stringify(value), secret).toString();
+      }
+    }
+  });
+
+  const isAuthenticated = computed(() => !!accessToken.value && !!userData.value);
 
   async function login(email: string, password: string) {
     try {
       const response = await api.user.login({ email, password });
-      const { accessToken, refreshToken } = response.data;
+      const { token, user } = response.data;
 
-      accessToken.value = accessToken;
-      refreshToken.value = refreshToken;
+      accessToken.value = token;
+      userData.value = user;
+
+      window.localStorage.setItem('token', CryptoJS.AES.encrypt(token, secret).toString());
+      window.localStorage.setItem('user', CryptoJS.AES.encrypt(JSON.stringify(user), secret).toString());
     } catch (error) {
       console.error(error);
     }
@@ -22,12 +48,11 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function logout() {
     accessToken.value = null;
-    refreshToken.value = null;
   }
 
   return {
     accessToken,
-    refreshToken,
+    userData,
     isAuthenticated,
     login,
     logout,

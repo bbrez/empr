@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { computed, reactive } from 'vue';
 
-import { api } from '@/lib/api';
 import router from '@/router';
 import type { User } from '@/lib/model/user';
+import { useAuthStore } from '@/stores/authStore';
+
+const authStore = useAuthStore();
 
 const user = reactive({
     email: '',
@@ -17,18 +19,17 @@ const isValid = computed(() => {
 });
 
 function submitForm() {
+    if (!user.password) return;
+
     errors.splice(0, errors.length);
 
-    api.user.login(user).then((answ) => {
-        console.log(answ);
-        window.localStorage.setItem('token', answ.data.token);
+    authStore.login(user.email, user.password).then(() => {
         router.push('/dashboard');
-        // router.push('/dashboard');
     }).catch((err: any): void => {
+        console.log(err);
         if (err.response.status === 401) {
             errors.push(err.response.data.error)
         }
-        console.log(err);
     })
 }
 </script>
