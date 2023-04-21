@@ -54,6 +54,6 @@ export namespace UserService {
 
         const token = createAccessToken(user);
 
-        return { token, user };
+        return { token, user: { ...user, password: undefined } };
     }
 }

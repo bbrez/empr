@@ -43,8 +43,8 @@ export const requireRole = (minRole: UserRole) => (req: Request, res: Response, 
     }
 
     console.log("✅ Authorization successful");
-    console.log("User: ", res.locals.user);
-    console.log("Min role: ", minRole);
+    console.log("⬆️  Min role: ", minRole);
+    console.log("⬆️  User role: ", userRole);
 
     next();
     return;

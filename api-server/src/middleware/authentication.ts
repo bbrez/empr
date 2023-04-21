@@ -13,7 +13,7 @@ export function createAccessToken(user: any) {
 }
 
 export function verifyToken(token: string) {
-    return jwt.verify(token, accessSecret) as User;
+    return (<any>jwt.verify(token, accessSecret)).user as User;
 }
 
 /**
@@ -26,7 +26,7 @@ export function verifyToken(token: string) {
  * @param next 
  * @returns
  */
-export function requireAuth(req: Request, res: Response, next: NextFunction) {
+export async function requireAuth(req: Request, res: Response, next: NextFunction) {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
         console.error("❌ Authentication failed: No token provided")
@@ -42,7 +42,7 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
     try {
         const decoded = verifyToken(token);
 
-        const user = prisma.user.findUnique({
+        const user = await prisma.user.findUnique({
             where: {
                 id: decoded.id
             },
@@ -63,9 +63,12 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
 
         res.locals.isAuthenticated = true;
         res.locals.user = decoded;
+        console.log("✅ Authentication successful");
+        console.log("⬆️  User: ", decoded.email);
         next();
     } catch (err) {
         console.error("❌ Authentication failed: Invalid Token");
+        console.error(err);
         return res.status(403).json({ error: "Authentication failed: Invalid Token" });
     }
 
