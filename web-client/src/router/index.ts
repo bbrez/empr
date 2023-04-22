@@ -1,10 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '@/stores/authStore';
 
 import LoginView from '../views/LoginView.vue';
-
+import EmptyPage from '../views/EmptyPage.vue';
 import ManagerDashboardView from '../views/ManagerDashboardView.vue';
-import AdminDashboardView from '../views/AdminDashboardView.vue';
-import { useAuthStore } from '@/stores/authStore';
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -57,15 +56,27 @@ const router = createRouter({
         roles: ['manager', 'admin'],
       }
     },
+
     {
       path: '/admin',
-      name: 'Admin-Panel',
-      component: AdminDashboardView,
+      component: EmptyPage,
+      children: [
+        {
+          path: '',
+          name: 'Admin-Panel',
+          component: () => import('../views/AdminDashboardView.vue'),
+        },
+        {
+          path: 'simulator',
+          name: 'Simulator',
+          component: () => import('../views/SimulatorView.vue'),
+        }
+      ],
       meta: {
         requiresAuth: true,
         roles: ['admin'],
       }
-    }
+    },
   ],
 });
 
