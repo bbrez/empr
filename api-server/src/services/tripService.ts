@@ -35,6 +35,19 @@ export namespace TripService {
         return trip;
     }
 
+    export const activateTrip = async (id: number) => {
+        const trip = await prisma.trip.update({
+            where: {
+                id,
+            },
+            data: {
+                isActivated: true,
+            },
+        });
+
+        return trip;
+    }
+
     export const addUserToTrip = async (tripId: number, userId: number) => {
         try {
             await prisma.usersOnTrips.create({

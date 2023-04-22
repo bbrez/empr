@@ -59,6 +59,31 @@ export namespace TripController {
         return;
     }
 
+    export const activateTrip = async (req: Request, res: Response) => {
+        const { trip_id } = req.params;
+
+        if (!trip_id) {
+            res.status(400).json({ error: "Missing required fields" });
+            return;
+        }
+
+        let trip: any;
+        try {
+            trip = await TripService.activateTrip(parseInt(trip_id));
+        } catch (err: any) {
+            res.status(400).json({ error: err.message });
+            return;
+        }
+
+        if (!trip) {
+            res.status(400).json({ error: "Could not activate trip" });
+            return;
+        }
+
+        res.status(200).json(trip);
+        return;
+    }
+
     export const addUserToTrip = async (req: Request, res: Response) => {
         const { trip_id } = req.params;
         const { user_id } = req.body;

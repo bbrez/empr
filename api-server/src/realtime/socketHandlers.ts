@@ -1,29 +1,34 @@
 import { PrismaClient, Trip, User } from "@prisma/client";
 import { Socket } from "socket.io";
+import { verifyToken } from "../middleware/authentication";
 
 const prisma = new PrismaClient();
 
-const socketHandlers = async (socket: Socket) => {
-    console.log('Socket connected');
+export const socketHandlers = async (socket: Socket) => {
+    console.log('🔌  New connection', socket.id);
 
-    let user: User | null = null;
+    if (!socket.handshake.auth.token) {
+        console.error('❌  No token provided');
+        socket.disconnect();
+        return;
+    }
+
+    const token = socket.handshake.auth.token;
+    let user = verifyToken(token);
+    if (!user) {
+        console.error('❌  User not found');
+        socket.disconnect();
+        return;
+    }
+
     let trip: Trip | null = null;
     socket.on('joinRoom', async (data: any) => {
         console.log('🚪  joinRoom', data);
-        const { userId, tripId } = data;
+        const { tripId } = data;
 
-        user = await prisma.user.findUnique({
-            where: { id: userId },
-        });
-
-        if (!user) {
-            console.error('❌  User not found');
-            socket.disconnect();
-            return;
-        }
-
+        console.log('🔑  tripId', tripId)
         trip = await prisma.trip.findUnique({
-            where: { id: tripId },
+            where: { id: parseInt(tripId) },
         });
 
         if (!trip) {
@@ -34,6 +39,7 @@ const socketHandlers = async (socket: Socket) => {
 
         if (!trip.isActivated) {
             console.error('❌  🕒  Trip is not activated');
+            socket.emit('tripNotActivated');
             socket.disconnect();
             return;
         }
@@ -45,11 +51,13 @@ const socketHandlers = async (socket: Socket) => {
 
     socket.on('updateLocation', async (data: any) => {
         console.log('🌐  updateLocation', data);
-        const { userId, location } = data;
+        const { location } = data;
 
-        const user = await prisma.user.update({
-            where: { id: userId },
-            data: { currentLocation: location },
+        console.log('🔑  location', location);
+
+        user = await prisma.user.update({
+            where: { id: user.id },
+            data: { currentLocation: JSON.stringify(location) },
         });
 
         socket.to(trip!.id.toString()).emit('userLocationUpdated', { userId: user.id, location: user.currentLocation });
@@ -60,5 +68,9 @@ const socketHandlers = async (socket: Socket) => {
 
     socket.on('disconnect', () => {
         console.log(`💔 User ${user?.firstName} disconnected from trip ${trip?.name}`)
+    });
+
+    socket.on('error', (err: any) => {
+        console.log(`❌ 💔 User ${user?.firstName} disconnected from trip ${trip?.name} with error ${err}`)
     });
 }

@@ -37,6 +37,8 @@ model Trip {
   endDate   DateTime
 
   isActivated Boolean @default(false)
+  areaCenter  String?
+  areaRadius  Float?
 
   UsersOnTrips UsersOnTrips[]
 

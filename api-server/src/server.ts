@@ -6,11 +6,18 @@ import { Server } from 'socket.io';
 import { loggerMiddleware } from './middleware/logging';
 import userRoutes from './routes/userRoutes';
 import tripRoutes from './routes/tripRoutes';
+import { socketHandlers } from './realtime/socketHandlers';
 
 async function main() {
     const app = express();
     const server = http.createServer(app);
-    const io = new Server(server);
+    const io = new Server(server, {
+        cors: {
+            origin: 'http://localhost:5173',
+        },
+    });
+
+    io.on('connection', socketHandlers)
 
     app.use(cors());
     app.use(express.json());
@@ -19,7 +26,8 @@ async function main() {
     app.use('/users', userRoutes);
     app.use('/trips', tripRoutes);
 
-    app.listen(3000, () => {
+
+    server.listen(3000, () => {
         console.log('Server running on port 3000');
     });
 }

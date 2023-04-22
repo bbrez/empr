@@ -6,13 +6,18 @@ import { UserRole } from "@prisma/client";
 
 const router = express.Router();
 
-router.post("/", (req: Request, res: Response) => {
+router.post("/", requireAuth, requireRole(UserRole.Manager), (req: Request, res: Response) => {
     TripController.createTrip(req, res);
 });
 
 router.get('/:trip_id', requireAuth, requireRole(UserRole.Tourist),
     (req: Request, res: Response) => {
         TripController.tripById(req, res);
+    });
+
+router.post('/:trip_id/activate', requireAuth, requireRole(UserRole.Guide),
+    (req: Request, res: Response) => {
+        TripController.activateTrip(req, res);
     });
 
 router.post("/:trip_id/users", requireAuth, requireRole(UserRole.Manager),

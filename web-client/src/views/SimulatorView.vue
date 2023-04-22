@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import * as L from "leaflet"
+
 import type { Socket } from "socket.io-client";
 import { io } from "socket.io-client";
+
 import type { User } from "@/lib/model/user";
+import { useAuthStore } from "@/stores/authStore";
+
+const auth = useAuthStore();
 
 interface MapUser extends User {
   lat: number;
@@ -12,9 +17,9 @@ interface MapUser extends User {
 
 let socket: Socket;
 let map: L.Map;
-let myLocation = [51.505, -0.09];
+let myLocation: L.LatLngTuple = [51.505, -0.09];
 let otherUsers: MapUser[] = [];
-let mapMarkers = [];
+let mapMarkers: L.Marker[] = [];
 onMounted(() => {
   map = L.map("map").setView([51.505, -0.09], 13);
 
@@ -22,17 +27,30 @@ onMounted(() => {
     attribution: "&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
   }).addTo(map);
 
+  mapMarkers.push(L.marker(myLocation).addTo(map)
+    .bindPopup("Eu")
+    .openPopup());
+
   map.on("click", (e) => {
+    socket.emit('updateLocation', { location: { lat: e.latlng.lat, lng: e.latlng.lng } });
+    myLocation = [e.latlng.lat, e.latlng.lng];
+
+    mapMarkers.forEach((m) => map.removeLayer(m));
+    mapMarkers = [];
+    mapMarkers.push(L.marker(myLocation).addTo(map)
+      .bindPopup("Eu")
+      .openPopup());
+
     console.log(e.latlng);
   });
 });
 
 const connect = async () => {
-  socket = io("http://localhost:3000");
+  console.log(auth);
+  socket = io("http://localhost:3000", { auth: { token: auth.accessToken } });
 
-  trip.value = trip.value.split(":")[1];
-  socket.emit('joinRoom', trip.value);
-  socket.emit('updateLocation', { lat: myLocation[0], lng: myLocation[1] });
+  socket.emit('joinRoom', { tripId: trip.value });
+  socket.emit('updateLocation', { location: { lat: myLocation[0], lng: myLocation[1] } });
 
   socket.on("userLocationUpdated", (data) => {
     console.log('👋  userLocationUpdated: ', data);
@@ -49,6 +67,10 @@ const connect = async () => {
     console.log('👋  userJoined: ', data);
     otherUsers.push(data);
   });
+
+  socket.on("disconnect", () => {
+    console.log('👋  disconnect');
+  });
 }
 
 let trip = ref("");
@@ -63,7 +85,7 @@ let trip = ref("");
       </div>
       <div class="col">
         <label for="tripInput" class="form-label">Trip</label>
-        <input type="text" id="tripInput" class="form-control" placeholder="id:1 or name:NY Shopping" v-model="trip">
+        <input type="text" id="tripInput" class="form-control" placeholder="1" v-model="trip">
       </div>
     </div>
   </div>
@@ -71,6 +93,6 @@ let trip = ref("");
 
 <style scoped>
 #map {
-  height: 800px;
+  height: 750px;
 }
 </style>
