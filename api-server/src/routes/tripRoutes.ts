@@ -15,6 +15,11 @@ router.get('/:trip_id', requireAuth, requireRole(UserRole.Tourist),
         TripController.tripById(req, res);
     });
 
+router.post('/:trip_id/area', requireAuth, requireRole(UserRole.Guide),
+    (req: Request, res: Response) => {
+        TripController.setTripArea(req, res);
+    });
+
 router.post('/:trip_id/activate', requireAuth, requireRole(UserRole.Guide),
     (req: Request, res: Response) => {
         TripController.activateTrip(req, res);

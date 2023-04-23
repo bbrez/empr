@@ -28,8 +28,7 @@ onMounted(() => {
   }).addTo(map);
 
   mapMarkers.push(L.marker(myLocation).addTo(map)
-    .bindPopup("Eu")
-    .openPopup());
+    .bindPopup("Eu"));
 
   map.on("click", (e) => {
     socket.emit('updateLocation', { location: { lat: e.latlng.lat, lng: e.latlng.lng } });
@@ -38,8 +37,7 @@ onMounted(() => {
     mapMarkers.forEach((m) => map.removeLayer(m));
     mapMarkers = [];
     mapMarkers.push(L.marker(myLocation).addTo(map)
-      .bindPopup("Eu")
-      .openPopup());
+      .bindPopup("Eu"));
 
     console.log(e.latlng);
   });
@@ -73,7 +71,7 @@ const connect = async () => {
   });
 }
 
-let trip = ref("");
+let trip = ref(1);
 </script>
 
 <template>

@@ -2,7 +2,7 @@ import { Prisma, PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-type CreateTripPayload = Omit<Prisma.TripGetPayload<{}>, 'id' | 'isActivated' | 'createdAt' | 'updatedAt'>;
+type CreateTripPayload = Pick<Prisma.TripGetPayload<{}>, 'name' | 'place' | 'startDate' | 'endDate'>;
 
 export namespace TripService {
     export const createTrip = async (trip: CreateTripPayload) => {
@@ -34,6 +34,35 @@ export namespace TripService {
 
         return trip;
     }
+
+    export const setTripArea = async (id: number, area: { position: { lat: number, long: number }, radius: number }) => {
+        const trip = await prisma.trip.update({
+            where: {
+                id,
+            },
+            data: {
+                areaCenter: JSON.stringify(area.position),
+                areaRadius: area.radius,
+            },
+        });
+
+        return trip;
+    }
+
+    export const setTripMeeting = async (id: number, meeting: { position: { lat: number, long: number }, time: Date }) => {
+        const trip = await prisma.trip.update({
+            where: {
+                id,
+            },
+            data: {
+                meetingPoint: JSON.stringify(meeting.position),
+                meetingTime: meeting.time,
+            },
+        });
+
+        return trip;
+    }
+
 
     export const activateTrip = async (id: number) => {
         const trip = await prisma.trip.update({

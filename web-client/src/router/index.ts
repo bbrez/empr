@@ -81,43 +81,36 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from) => {
-  // console.log('to', to);
-  // console.log('from', from);
+  const authStore = useAuthStore();
 
-  // const authStore = useAuthStore();
+  // Se o usuario estiver logado e tentar acessar a página de login, redireciona para a página inicial
+  if (to.name === 'login') {
 
-  // // Se o usuario estiver logado e tentar acessar a página de login, redireciona para a página inicial
-  // if (to.name === 'login') {
+    if (authStore.isAuthenticated) {
+      return { name: 'Home' };
+    }
+  }
 
-  //   if (authStore.isAuthenticated) {
-  //     next({ name: 'Home' });
-  //     return;
-  //   }
-  // }
+  if (to.matched.some(record => record.meta.requiresAuth)) {
 
-  // if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!authStore.isAuthenticated) {
+      // Se não estiver logado, redireciona para a página de login
+      return { name: 'login' };
+    }
 
-  //   if (!authStore.isAuthenticated) {
-  //     // Se não estiver logado, redireciona para a página de login
-  //     next({ name: 'Home', query: { redirect: to.fullPath } });
-  //     return;
-  //   }
+    // Se a rota necessita de uma role específica, verifica se o usuário tem a role necessária
+    if (to.meta.roles) {
+      const userRole = authStore.userData.role;
 
-  //   // Se a rota necessita de uma role específica, verifica se o usuário tem a role necessária
-  //   if (to.meta.roles) {
-  //     const userRole = authStore.userData.role;
+      // Se o usuário tem a role necessária, prossegue para a rota
+      if (to.meta.roles.includes(userRole)) {
+        return true;
 
-  //     // Se o usuário tem a role necessária, prossegue para a rota
-  //     if (to.meta.roles.includes(userRole)) {
-  //       next();
-  //       return;
-
-  //     } else { // Se o usuário não tem a role necessária, redireciona para a página de login
-  //       next({ name: 'Home', query: { redirect: to.fullPath } });
-  //       return;
-  //     }
-  //   }
-  // }
+      } else { // Se o usuário não tem a role necessária, redireciona para a página de login
+        return { name: 'Home' }
+      }
+    }
+  }
 
   return true;
 });

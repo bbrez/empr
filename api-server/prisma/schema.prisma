@@ -40,6 +40,9 @@ model Trip {
   areaCenter  String?
   areaRadius  Float?
 
+  meetingPoint String?
+  meetingTime  DateTime?
+
   UsersOnTrips UsersOnTrips[]
 
   createdAt DateTime @default(now())
