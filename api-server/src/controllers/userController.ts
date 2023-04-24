@@ -37,6 +37,11 @@ export namespace UserController {
             role,
         });
 
+        if (!user) {
+            res.status(500).json({ error: "Server error" });
+            return;
+        }
+
         res.status(201).json(user);
         return;
     }

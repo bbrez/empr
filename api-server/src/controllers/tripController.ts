@@ -30,7 +30,7 @@ export namespace TripController {
         }
 
         if (!trip) {
-            res.status(400).json({ error: "Could not create trip" });
+            res.status(500).json({ error: "Could not create trip" });
             return;
         }
 
