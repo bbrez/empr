@@ -17,9 +17,13 @@
         "./web-client"
     ],
     "devDependencies": {
+        "buffer": "^5.7.1",
         "eslint": "^8.38.0",
+        "events": "^3.3.0",
         "nodemon": "^2.0.22",
+        "path-browserify": "^1.0.1",
         "prettier": "^2.8.7",
+        "stream-http": "^3.2.0",
         "typescript": "^5.0.4"
     }
 }

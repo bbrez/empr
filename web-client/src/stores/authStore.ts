@@ -66,24 +66,4 @@ export const useAuthStore = defineStore('auth', () => {
     login,
     logout
   }
-})
-
-// export const useAuthStore = defineStore({
-//         async refreshAccessToken() {
-//             try {
-//                 const response = api.user.refreshToken()
-//             } catch (error) {
-//                 console.error(error);
-//             }
-//         },
-
-//         async setTokens(accessToken: string, refreshToken: string) {
-//             this.accessToken = accessToken;
-//             this.refreshToken = refreshToken;
-//         },
-
-//         async logout() {
-//             this.$reset();
-//         }
-//     },
-// });
+});

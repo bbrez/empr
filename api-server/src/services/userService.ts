@@ -1,6 +1,5 @@
-import { Prisma, PrismaClient } from ".prisma/client";
-import { comparePassword, hashPassword } from "../crypto";
-import { UserRole } from "@prisma/client";
+import { Prisma, PrismaClient, UserRole } from "@prisma/client";
+import { comparePassword, hashPassword } from "../util/crypto";
 import { createAccessToken } from "../middleware/authentication";
 
 const prisma = new PrismaClient();
