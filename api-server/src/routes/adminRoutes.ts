@@ -9,8 +9,7 @@ import { AdminController } from "../controllers/adminController";
 const router = express.Router();
 
 router.get("/users", requireAuth, requireRole(UserRole.Admin), (req, res) => {
-    //not implemented
-    return res.status(501).json({ error: "Not implemented" });
+    AdminController.userList(req, res);
 });
 
 router.post("/users", requireAuth, requireRole(UserRole.Admin), (req, res) => {
