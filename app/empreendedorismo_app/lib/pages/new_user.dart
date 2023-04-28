@@ -54,7 +54,7 @@ class NewUserDemoState extends State<NewUserPage> {
    }
 
    void createUser() async {
-     final response = await http.post(Uri.parse('http://18.230.85.64/users'),
+     final response = await http.post(Uri.parse('http://empreendedorismo.dynv6.net/users'),
        headers: <String, String>{
          'Content-Type': 'application/json',
        },

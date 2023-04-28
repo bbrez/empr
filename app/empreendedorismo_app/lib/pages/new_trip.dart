@@ -47,7 +47,7 @@ class NewTripDemoState extends State<NewTripPage> {
   }
 
   void createTrip() async {
-    final response = await http.post(Uri.parse(' http://18.230.85.64/trips'),
+    final response = await http.post(Uri.parse('http://empreendedorismo.dynv6.net/trips'),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },

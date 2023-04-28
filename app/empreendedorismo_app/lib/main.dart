@@ -53,7 +53,7 @@ class LoginDemoState extends State<LoginPage> {
   TextEditingController passwdController = TextEditingController();
 
   void login() async {
-    final response = await http.post(Uri.parse('http://18.230.85.64/users/login'),
+    final response = await http.post(Uri.parse('http://empreendedorismo.dynv6.net/users/login'),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
@@ -71,10 +71,10 @@ class LoginDemoState extends State<LoginPage> {
       User user = body.user;
       if (user.role == 'Tourist'){
         Navigator.push(
-            context, MaterialPageRoute(builder: (_) => const HomePage()));
+            context, MaterialPageRoute(builder: (_) => const TouristHomePage()));
       }else {
         Navigator.push(
-            context, MaterialPageRoute(builder: (_) => const TouristHomePage()));
+          context, MaterialPageRoute(builder: (_) => const HomePage()));
       }
     } else {
 
