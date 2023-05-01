@@ -2,7 +2,6 @@ import express from 'express';
 import http from 'http';
 import cors from 'cors';
 import { Server } from 'socket.io';
-import swaggerUi from 'swagger-ui-express';
 
 import { loggerMiddleware } from './middleware/logging';
 
@@ -12,31 +11,15 @@ import adminRoutes from './routes/adminRoutes';
 
 import { socketHandlers } from './realtime/socketHandlers';
 
-const spec = require('../openapi.json');
-
 async function main() {
     const app = express();
     const server = http.createServer(app);
-    const io = new Server(server, {
-        cors: {
-            origin: 'http://localhost:5173',
-        },
-    });
+    const io = new Server(server, {});
 
     io.on('connection', socketHandlers)
 
     app.use(cors());
     app.use(loggerMiddleware());
-
-    // app.get('/docs', swaggerUi.serve, swaggerUi.setup(spec));
-    // app.get('/swagger-ui-init.js', ...swaggerUi.serve);
-    // app.get('/swagger-ui.css', ...swaggerUi.serve);
-    // app.get('/swagger-ui-bundle.js', ...swaggerUi.serve);
-    // app.get('/swagger-ui-standalone-preset.js', ...swaggerUi.serve);
-    // app.get('/openapi.json', (req, res) => {
-    //     res.setHeader('Content-Type', 'application/json');
-    //     res.send(spec);
-    // });
 
     app.use(express.json());
 

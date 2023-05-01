@@ -46,6 +46,16 @@ async function main() {
         }
     });
     console.log(tourist);
+
+    const trip = await prisma.trip.create({
+        data: {
+            name: "Compras em NYC",
+            place: "5th Avenue e arredores",
+            startDate: new Date("2021-10-01, 10:00:00"),
+            endDate: new Date("2021-10-01, 18:00:00"),
+        }
+    });
+    console.log(trip);
 }
 
 main().then(async () => {

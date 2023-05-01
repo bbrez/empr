@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 import { PrismaClient, User } from "@prisma/client";
 
-const accessSecret = env?._JWT_SECRET || "secret";
+const accessSecret = env?.JWT_SECRET || "secret";
 
 const prisma = new PrismaClient();
 
