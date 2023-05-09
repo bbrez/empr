@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { PrismaClient, UserRole } from "@prisma/client";
 import { verifyToken } from "./authentication";
+import logger from "../util/logger";
 
 const prisma = new PrismaClient();
 
@@ -27,24 +28,24 @@ const roleToNumber = (role: UserRole) => {
  */
 export const requireRole = (minRole: UserRole) => (req: Request, res: Response, next: NextFunction) => {
     if (!res.locals.isAuthenticated || !res.locals.user) {
-        console.error("❌ Authorization failed: User is not authenticated");
+        logger.error("❌ Authorization failed: User is not authenticated");
         return res.status(401).json({ error: "Authorization failed: User is not authenticated" });
     }
 
     const userRole = res.locals.user?.role;
     if (!userRole) {
-        console.error("❌ Authorization failed: User role not found");
+        logger.error("❌ Authorization failed: User role not found");
         return res.status(401).json({ error: "Authorization failed: User role not found" });
     }
 
     if (roleToNumber(userRole) < roleToNumber(minRole)) {
-        console.error("❌ Authorization failed: User is not authorized");
+        logger.error("❌ Authorization failed: User is not authorized");
         return res.status(401).json({ error: "Authorization failed: User is not authorized" });
     }
 
-    console.log("✅ Authorization successful");
-    console.log("⬆️  Min role: ", minRole);
-    console.log("⬆️  User role: ", userRole);
+    logger.info("✅ Authorization successful");
+    logger.info("⬆️  Min role: ", minRole);
+    logger.info("⬆️  User role: ", userRole);
 
     next();
     return;

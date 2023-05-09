@@ -10,6 +10,7 @@ import tripRoutes from './routes/tripRoutes';
 import adminRoutes from './routes/adminRoutes';
 
 import { socketHandlers } from './realtime/socketHandlers';
+import logger from './util/logger';
 
 async function main() {
     const app = express();
@@ -28,7 +29,7 @@ async function main() {
     app.use('/admin', adminRoutes);
 
     server.listen(3000, () => {
-        console.log('Server running on port 3000');
+        logger.info('Server running on port 3000');
     });
 }
 

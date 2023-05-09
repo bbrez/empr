@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
 import { PrismaClient, User } from "@prisma/client";
+import logger from "../util/logger";
 
 const accessSecret = env?.JWT_SECRET || "secret";
 
@@ -29,13 +30,13 @@ export function verifyToken(token: string) {
 export async function requireAuth(req: Request, res: Response, next: NextFunction) {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-        console.error("❌ Authentication failed: No token provided")
+        logger.error("❌ Authentication failed: No token provided");
         return res.status(401).json({ error: "Authentication failed: No token provided" });
     }
 
     const token = authHeader.substring(7, authHeader.length);
     if (!token) {
-        console.error("❌ Authentication failed: No token provided")
+        logger.error("❌ Authentication failed: No token provided");
         return res.status(401).json({ error: "Authentication failed: No token provided" });
     }
 
@@ -49,26 +50,26 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
         });
 
         if (user == null) {
-            console.error("❌ Authentication failed: Invalid Token");
-            console.error("User not found: ", decoded);
+            logger.error("❌ Authentication failed: Invalid Token");
+            logger.error("User not found: ", decoded);
             return res.status(403).json({ error: "Authentication failed: Invalid Token" });
         }
 
         if (JSON.stringify(user) !== JSON.stringify(decoded)) {
-            console.error("❌ Authentication failed: Invalid Token");
-            console.error("User: ", user);
-            console.error("Decoded: ", decoded);
+            logger.error("❌ Authentication failed: Invalid Token");
+            logger.error("🧑‍💻 User: ", user);
+            logger.error("🧑‍💻 Decoded: ", decoded);
             return res.status(403).json({ error: "Authentication failed: Invalid Token" });
         }
 
         res.locals.isAuthenticated = true;
         res.locals.user = decoded;
-        console.log("✅ Authentication successful");
-        console.log("⬆️  User: ", decoded.email);
+        logger.info("✅ Authentication successful");
+        logger.info("⬆️  User: ", decoded.email);
         next();
     } catch (err) {
-        console.error("❌ Authentication failed: Invalid Token");
-        console.error(err);
+        logger.error("❌ Authentication failed: Invalid Token");
+        logger.error("❌ Error: ", err);
         return res.status(403).json({ error: "Authentication failed: Invalid Token" });
     }
 
