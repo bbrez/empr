@@ -1,4 +1,6 @@
 import { Prisma, PrismaClient } from "@prisma/client";
+import logger from "../util/logger";
+import { Area, Meeting } from "../util/types";
 
 const prisma = new PrismaClient();
 
@@ -35,7 +37,8 @@ export namespace TripService {
         return trip;
     }
 
-    export const setTripArea = async (id: number, area: { position: { lat: number, long: number }, radius: number }) => {
+    export const setTripArea = async (id: number, area: Area) => {
+
         const trip = await prisma.trip.update({
             where: {
                 id,
@@ -49,7 +52,7 @@ export namespace TripService {
         return trip;
     }
 
-    export const setTripMeeting = async (id: number, meeting: { position: { lat: number, long: number }, time: Date }) => {
+    export const setTripMeeting = async (id: number, meeting: Meeting) => {
         const trip = await prisma.trip.update({
             where: {
                 id,
@@ -94,7 +97,7 @@ export namespace TripService {
                 },
             });
         } catch (err: any) {
-            console.error("❌ Could not add user to trip: ", err.message);
+            logger.error("❌ Could not add user to trip: ", err.message);
             return false;
         }
 

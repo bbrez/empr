@@ -10,9 +10,11 @@ export default winston.createLogger({
     transports: [
         new winston.transports.Console({
             format: winston.format.combine(
-                winston.format.colorize(),
-                winston.format.simple(),
-            )
+                winston.format.prettyPrint({
+                    colorize: true,
+                }),
+                winston.format.timestamp()
+            ),
         }),
         new winston.transports.File({
             filename: 'logs/main.log',

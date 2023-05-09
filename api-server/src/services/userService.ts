@@ -42,13 +42,13 @@ export namespace UserService {
         const user = await userByEmail(info.email);
 
         if (!user) {
-            throw new Error('‼️ Invalid email or password');
+            throw new Error('❌  Invalid email or password');
         }
 
         const isPasswordCorrect = await comparePassword(info.password, user.password);
 
         if (!isPasswordCorrect) {
-            throw new Error('‼️ Invalid email or password');
+            throw new Error('❌  Invalid email or password');
         }
 
         const token = createAccessToken(user);
