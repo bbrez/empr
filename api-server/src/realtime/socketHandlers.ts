@@ -47,6 +47,9 @@ export const socketHandlers = async (socket: Socket) => {
 
         socketLogger.info(`👋  User ${user.firstName} joined trip ${trip.name}`)
         socket.join(tripId as string);
+
+        socket.emit('newMarker', { name: 'meetingPoint', location: trip.meetingPoint, data: trip.meetingTime });
+        socket.emit('newMarker', { name: 'tripArea', location: trip.areaCenter, data: trip.areaRadius });
         return;
     });
 

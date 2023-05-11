@@ -9,5 +9,5 @@ export const loggerMiddleware = () => (req: Request, res: Response, next: NextFu
 
     next();
 
-    logger.info(`➡️  ${res.statusCode}`);
+    logger.info(`➡️  ${req.method} ${req.path} ${res.statusCode}`)
 }
