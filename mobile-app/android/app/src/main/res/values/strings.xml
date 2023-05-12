@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
-    <string name="app_name">TourTrack</string>
-    <string name="title_activity_main">TourTrack</string>
-    <string name="package_name">br.unioeste.tour_track</string>
-    <string name="custom_url_scheme">br.unioeste.tour_track</string>
-</resources>

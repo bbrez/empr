@@ -96,9 +96,9 @@ const router = createRouter({
   ]
 });
 
-for (const route of router.getRoutes()) {
-  console.log(route.path);
-}
+// for (const route of router.getRoutes()) {
+//   console.log(route.path);
+// }
 
 router.beforeEach((to, from) => {
   const authStore = useAuthStore()

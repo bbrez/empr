@@ -1,0 +1,7 @@
+{
+  "name": "mobile-web",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue-vite"
+}
