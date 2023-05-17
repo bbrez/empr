@@ -15,6 +15,8 @@ export namespace UserController {
             lastName,
             email,
             password,
+            companyId: null,
+            phoneNumber: null,
         });
 
         res.status(201).json(user);
@@ -35,6 +37,8 @@ export namespace UserController {
             email,
             password,
             role,
+            companyId: null,
+            phoneNumber: null,
         });
 
         if (!user) {

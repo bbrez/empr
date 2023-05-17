@@ -4,7 +4,7 @@ import { Area, Meeting } from "../util/types";
 
 const prisma = new PrismaClient();
 
-type CreateTripPayload = Pick<Prisma.TripGetPayload<{}>, 'name' | 'place' | 'startDate' | 'endDate'>;
+type CreateTripPayload = Pick<Prisma.TripGetPayload<{}>, 'name' | 'place' | 'startDate' | 'endDate' | 'companyId'>;
 
 export namespace TripService {
     export const createTrip = async (trip: CreateTripPayload) => {
