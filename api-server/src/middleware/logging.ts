@@ -7,7 +7,12 @@ export const loggerMiddleware = () => (req: Request, res: Response, next: NextFu
     if (req.query != null && Object.keys(req.query).length != 0) logger.info("⬆️  Query: ", req.query);
     if (req.params != null && Object.keys(req.params).length != 0) logger.info("⬆️  Params: ", req.params);
 
-    next();
+    const statusFunction = res.status;
+    res.status = (status) => {
+        logger.info(`➡️  Response: ${req.method} ${req.path} ${status}`);
 
-    logger.info(`➡️  Response: ${req.method} ${req.path} ${res.statusCode}`)
+        return statusFunction.apply(res, [status]);
+    }
+
+    next();
 }

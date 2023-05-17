@@ -15,7 +15,11 @@ import logger from './util/logger';
 async function main() {
     const app = express();
     const server = http.createServer(app);
-    const io = new Server(server, {});
+    const io = new Server(server, {
+        cors: {
+            origin: '*',
+        }
+    });
 
     io.on('connection', socketHandlers)
 

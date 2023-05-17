@@ -5,7 +5,7 @@ import { useAuthStore } from '@/stores/authStore'
 type UserPayload = Pick<User, 'email' | 'password'>
 
 const api_client = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: 'https://empreendedorismo.dynv6.net',
   headers: {
     'Content-Type': 'application/json'
   }

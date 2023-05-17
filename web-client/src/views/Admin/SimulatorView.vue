@@ -44,7 +44,7 @@ onMounted(() => {
 
 const connect = async () => {
   console.log(auth)
-  socket = io('http://localhost:3000', { auth: { token: auth.accessToken } })
+  socket = io('https://empreendedorismo.dynv6.net', { auth: { token: auth.accessToken } })
 
   socket.emit('joinRoom', { tripId: trip.value })
   socket.emit('updateLocation', { location: { lat: myLocation[0], lng: myLocation[1] } })
