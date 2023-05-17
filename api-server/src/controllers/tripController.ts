@@ -10,6 +10,7 @@ export namespace TripController {
             place: z.string(),
             startDate: z.date(),
             endDate: z.date(),
+            companyId: z.number(),
         });
 
         const validated = validator.safeParse(req.body);
@@ -19,7 +20,7 @@ export namespace TripController {
             return;
         }
 
-        const { name, place, startDate, endDate } = req.body;
+        const { name, place, startDate, endDate, companyId } = req.body;
 
         let trip: any;
         try {
@@ -28,6 +29,7 @@ export namespace TripController {
                 place,
                 startDate,
                 endDate,
+                companyId
             });
         } catch (err: any) {
             logger.error("❌ Could not create trip: ", err.message)
