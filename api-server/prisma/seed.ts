@@ -51,6 +51,19 @@ async function main() {
     });
     console.log(tourist);
 
+    const company = await prisma.company.create({
+        data: {
+            name: "Empresa de Turismo",
+            users: {
+                connect: [
+                    { id: admin.id },
+                    { id: manager.id },
+                    { id: guide.id },
+                ]
+            }
+        }
+    });
+
     const trip = await prisma.trip.create({
         data: {
             name: "Compras em NYC",
@@ -63,6 +76,10 @@ async function main() {
                         userId: tourist.id,
                     }
                 ]
+            },
+
+            company: {
+                connect: { id: company.id }
             }
         }
     });
