@@ -21,6 +21,28 @@ export namespace AdminService {
         return users;
     }
 
+    export const tripList = async (page: number) => {
+        const trips = await prisma.trip.findMany({
+            skip: (page - 1) * 100,
+            take: 100,
+            select: {
+                id: true,
+                name: true,
+                areaCenter: true,
+                areaRadius: true,
+                isActivated: true,
+                endDate: true,
+                meetingPoint: true,
+                meetingTime: true,
+                startDate: true,
+                createdAt: true,
+                updatedAt: true,
+            },
+        });
+
+        return trips;
+    }
+
     export const adminPanelInfo = async () => {
         const userCount = await prisma.user.count();
 

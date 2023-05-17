@@ -8,6 +8,12 @@ export namespace AdminController {
         res.status(200).json(users);
     }
 
+    export const tripList = async (req: Request, res: Response) => {
+        const page = parseInt(req.query.page as string);
+        const trips = await AdminService.tripList(page);
+        res.status(200).json(trips);
+    }
+
     export const adminPanelInfo = async (req: Request, res: Response) => {
         const info = await AdminService.adminPanelInfo();
         res.status(200).json(info);
