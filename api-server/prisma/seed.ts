@@ -3,6 +3,10 @@ import { hashPassword } from "../src/util/crypto";
 const prisma = new PrismaClient();
 
 async function main() {
+    await prisma.user.deleteMany({});
+    await prisma.trip.deleteMany({});
+    await prisma.usersOnTrips.deleteMany({});
+
     const admin = await prisma.user.create({
         data: {
             firstName: "Admin",
@@ -53,6 +57,13 @@ async function main() {
             place: "5th Avenue e arredores",
             startDate: new Date("2021-10-01, 10:00:00"),
             endDate: new Date("2021-10-01, 18:00:00"),
+            UsersOnTrips: {
+                create: [
+                    {
+                        userId: tourist.id,
+                    }
+                ]
+            }
         }
     });
     console.log(trip);

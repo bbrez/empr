@@ -16,7 +16,7 @@ router.post("/users", requireAuth, requireRole(UserRole.Admin), (req, res) => {
     UserController.createUserWithRole(req, res);
 });
 
-router.post("/trips", requireAuth, requireRole(UserRole.Admin), (req, res) => {
+router.get("/trips", requireAuth, requireRole(UserRole.Admin), (req, res) => {
     AdminController.tripList(req, res);
 });
 

@@ -3,12 +3,14 @@ import { AdminService } from '../services/adminService';
 
 export namespace AdminController {
     export const userList = async (req: Request, res: Response) => {
+        req.query.page = req.query.page || "1";
         const page = parseInt(req.query.page as string);
         const users = await AdminService.userList(page);
         res.status(200).json(users);
     }
 
     export const tripList = async (req: Request, res: Response) => {
+        req.query.page = req.query.page || "1";
         const page = parseInt(req.query.page as string);
         const trips = await AdminService.tripList(page);
         res.status(200).json(trips);
