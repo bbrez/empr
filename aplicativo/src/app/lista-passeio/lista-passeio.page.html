@@ -1,0 +1,14 @@
+<ng-container *ngIf="passeios.length > 0">
+  <div class="container mt-3">
+    <app-card-passeio *ngFor="let passeio of passeios" [passeio]="passeio">
+    </app-card-passeio>
+  </div>
+</ng-container>
+<button class="btn btn-danger" (click)="loginService.sair()">SAIR</button>
+<div class="fab" *ngIf="loginService.minRole('Manager')">
+  <a href="/criar-passeio">
+    <button class="button">
+    <i class="fa-solid fa-add"></i>
+    </button>
+  </a>
+</div>

@@ -1,0 +1,38 @@
+<div class="container d-flex flex-column justify-content-center vh-100 p-4">
+  <div class="row justify-content-center border border-primary rounded p-3">
+    <h3 class="col-12 text-center">
+      Criar Novo Passeio
+    </h3>
+    <div class="col-12">
+
+        <div class="mb-3">
+          <label for="inputName" class="form-label">Nome</label>
+          <input type="text" id="inputName" class="form-control" [(ngModel)]="trip.name">
+        </div>
+
+        <div class="mb-3">
+          <label for="inputPlace" class="form-label">Local</label>
+          <input type="text" id="inputPlace" class="form-control" [(ngModel)]="trip.place">
+        </div>
+
+        <div class="mb-3">
+          <label for="inputStartDate" class="form-label">Data de Inicio</label>
+          <input type="datetime-local" id="inputStartDate" class="form-control" [(ngModel)]="trip.startDate">
+        </div>
+
+        <div class="mb-3">
+          <label for="inputEndDate" class="form-label">Data de Término</label>
+          <input type="datetime-local" id="inputEndDate" class="form-control" [(ngModel)]="trip.endDate">
+        </div>
+
+        <button type="submit" class="btn btn-primary me-3" (click)="submitForm()">
+          Criar
+        </button>
+        <a href="/lista-passeio" class="btn btn-outline-warning">
+          Voltar
+        </a>
+
+      {{ error }}
+    </div>
+  </div>
+</div>

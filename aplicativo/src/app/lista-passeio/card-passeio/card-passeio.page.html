@@ -1,0 +1,26 @@
+<div class="card" [class.border-primary]="passeio.isActivated" *ngIf="passeio">
+  <div class="card-body">
+    <h5 class="card-title">{{passeio.name}}</h5>
+    <p class="card-text">{{passeio.place}}</p>
+    <div class="card-text">
+      <i class="fa-regular fa-clock me-2"></i>
+      Inicio: {{passeio.startDate | date:'short'}}
+    </div>
+    <div class="card-text">
+      <i class="fa-solid fa-flag-checkered me-2"></i>
+      Fim: {{passeio.endDate | date:'short'}}
+    </div>
+    <div class="row mt-3">
+      <div class="col">
+        <a [href]="roleDetails(loginService.user.role)" class="btn w-100" [class.btn-primary]="!passeio.isActivated" [class.btn-outline-primary]="passeio.isActivated">
+          Detalhes
+        </a>
+      </div>
+      <div class="col" *ngIf="passeio.isActivated">
+        <a href="user-map/{{passeio.id}}" class="btn btn-primary w-100">
+          Entrar
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

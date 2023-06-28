@@ -1,0 +1,22 @@
+.fab {
+    z-index: 9999;
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+
+    & .button {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+        font-size: 24px;
+    }
+}
+
+.second-fab {
+    bottom: 96px;
+
+    & .button {
+        background-color: red;
+    }
+}

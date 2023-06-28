@@ -3,7 +3,7 @@ import { UserService } from "../services/userService";
 
 export namespace UserController {
     export const createUser = async (req: Request, res: Response) => {
-        const { firstName, lastName, email, password } = req.body;
+        const { firstName, lastName, email, password, phoneNumber} = req.body;
 
         if (!firstName || !lastName || !email || !password) {
             res.status(400).json({ error: "Missing required fields" });
@@ -15,8 +15,8 @@ export namespace UserController {
             lastName,
             email,
             password,
+            phoneNumber,
             companyId: null,
-            phoneNumber: null,
         });
 
         res.status(201).json(user);

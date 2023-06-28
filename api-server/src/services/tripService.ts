@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient, User } from "@prisma/client";
 import logger from "../util/logger";
 import { Area, Meeting } from "../util/types";
 
@@ -13,6 +13,33 @@ export namespace TripService {
         });
 
         return createdTrip;
+    }
+
+    export const userTrips = async (user: User) => {
+        let trips: any[] = [];
+        if (user.role == 'Admin' || user.role == 'Manager') {
+            if (!user.companyId) throw new Error('User has no company');
+
+            trips = await prisma.trip.findMany({
+                where: {
+                    companyId: user.companyId,
+                },
+            });
+
+        } else {
+
+            trips = await prisma.trip.findMany({
+                where: {
+                    UsersOnTrips: {
+                        some: {
+                            userId: user.id,
+                        }
+                    }
+                },
+            });
+        }
+
+        return trips;
     }
 
     export const tripById = async (id: number) => {
@@ -37,42 +64,15 @@ export namespace TripService {
         return trip;
     }
 
-    export const setTripArea = async (id: number, area: Area) => {
-
+    export const activateTrip = async (id: number, area: {center: {lat: number, lng: number}, radius: number}, meeting: {lat: number, lng: number}) => {
         const trip = await prisma.trip.update({
             where: {
                 id,
             },
             data: {
-                areaCenter: JSON.stringify(area.position),
                 areaRadius: area.radius,
-            },
-        });
-
-        return trip;
-    }
-
-    export const setTripMeeting = async (id: number, meeting: Meeting) => {
-        const trip = await prisma.trip.update({
-            where: {
-                id,
-            },
-            data: {
-                meetingPoint: JSON.stringify(meeting.position),
-                meetingTime: meeting.time,
-            },
-        });
-
-        return trip;
-    }
-
-
-    export const activateTrip = async (id: number) => {
-        const trip = await prisma.trip.update({
-            where: {
-                id,
-            },
-            data: {
+                areaCenter: JSON.stringify(area.center),
+                meetingPoint: JSON.stringify(meeting),
                 isActivated: true,
             },
         });
@@ -80,13 +80,13 @@ export namespace TripService {
         return trip;
     }
 
-    export const addUserToTrip = async (tripId: number, userId: number) => {
+    export const addUserToTrip = async (tripId: number, userEmail: string) => {
         try {
             await prisma.usersOnTrips.create({
                 data: {
                     user: {
                         connect: {
-                            id: userId,
+                            email: userEmail,
                         }
                     },
                     trip: {

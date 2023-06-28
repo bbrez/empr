@@ -57,7 +57,6 @@ model Trip {
   areaRadius  Float?
 
   meetingPoint String?
-  meetingTime  DateTime?
 
   company   Company @relation(fields: [companyId], references: [id])
   companyId Int

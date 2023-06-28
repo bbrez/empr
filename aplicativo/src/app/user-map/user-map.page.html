@@ -1,0 +1,21 @@
+<ng-container *ngIf="trip">
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+            <a href="/lista-passeio" class="navbar-brand">
+                <i class="fa-solid fa-chevron-left"></i>
+                {{ trip.name }}
+            </a>
+        </div>
+    </nav>
+</ng-container>
+<div id="map" style="height: 100%"></div>
+<div class="fab">
+    <button class="button" (click)="centerOnUser()">
+        <i class="fa-solid fa-arrows-to-circle"></i>
+    </button>
+</div>
+<div class="fab second-fab">
+    <button class="button" (click)="emergency()">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+    </button>
+</div>
