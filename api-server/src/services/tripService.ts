@@ -27,6 +27,7 @@ export namespace TripService {
             });
 
         } else {
+            const today = new Date();
 
             trips = await prisma.trip.findMany({
                 where: {
@@ -34,7 +35,13 @@ export namespace TripService {
                         some: {
                             userId: user.id,
                         }
+                    },
+                    startDate: {
+                        gte: today,
                     }
+                },
+                orderBy: {
+                    startDate: 'asc',
                 },
             });
         }

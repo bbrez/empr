@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package dev.bbrez.savetravels;
 
 import com.getcapacitor.BridgeActivity;
 
