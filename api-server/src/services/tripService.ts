@@ -1,6 +1,5 @@
 import { Prisma, PrismaClient, User } from "@prisma/client";
 import logger from "../util/logger";
-import { Area, Meeting } from "../util/types";
 
 const prisma = new PrismaClient();
 
