@@ -15,6 +15,7 @@ export namespace AdminService {
                 role: true,
                 createdAt: true,
                 updatedAt: true,
+                company: true
             },
         });
 
