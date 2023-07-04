@@ -19,7 +19,11 @@ export namespace TripService {
 
         switch (user.role) {
             case 'Admin':
-                trips = await prisma.trip.findMany({});
+                trips = await prisma.trip.findMany({
+                    include: {
+                        company: true,
+                    }
+                });
                 break;
 
             case 'Manager':
