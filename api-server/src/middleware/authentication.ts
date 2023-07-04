@@ -57,19 +57,19 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
 
         if (JSON.stringify(user) !== JSON.stringify(decoded)) {
             logger.error("❌ Authentication failed: Invalid Token");
-            logger.error("🧑‍💻 User: ", user);
-            logger.error("🧑‍💻 Decoded: ", decoded);
+            logger.error(`🧑‍💻 User: ${user}`);
+            logger.error(`🧑‍💻 Decoded: ${decoded}`);
             return res.status(403).json({ error: "Authentication failed: Invalid Token" });
         }
 
         res.locals.isAuthenticated = true;
         res.locals.user = decoded;
         logger.info("✅ Authentication successful");
-        logger.info("⬆️  User: ", decoded.email);
+        logger.info(`⬆️  User: ${decoded.email}`, decoded.email);
         next();
     } catch (err) {
         logger.error("❌ Authentication failed: Invalid Token");
-        logger.error("❌ Error: ", err);
+        logger.error(`❌ Error: ${err}`);
         return res.status(403).json({ error: "Authentication failed: Invalid Token" });
     }
 

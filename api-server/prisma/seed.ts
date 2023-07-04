@@ -15,7 +15,7 @@ async function main() {
             email: "admin@admin.com",
             password: await hashPassword("admin"),
             role: UserRole.Admin,
-        } 
+        }
     });
     console.log(admin);
 
@@ -26,7 +26,7 @@ async function main() {
             email: "bbrezolin@gmail.com",
             password: await hashPassword("abcdef"),
             role: UserRole.Admin,
-        } 
+        }
     });
     console.log(admin1);
 
@@ -37,7 +37,7 @@ async function main() {
             email: "rlhipolito@gmail.com",
             password: await hashPassword("ghijk"),
             role: UserRole.Admin,
-        } 
+        }
     });
     console.log(admin2);
 
@@ -136,7 +136,7 @@ async function main() {
             email: "leonardobfritas@gmail.com",
             password: await hashPassword("geladeira"),
             role: UserRole.Tourist,
-        } 
+        }
     });
     console.log(tourist1);
 
@@ -147,7 +147,7 @@ async function main() {
             email: "raphaelbrandao@gmail.com",
             password: await hashPassword("geladeira6"),
             role: UserRole.Tourist,
-        } 
+        }
     });
     console.log(tourist2);
 
@@ -158,7 +158,7 @@ async function main() {
             email: "pedrinho@gmail.com",
             password: await hashPassword("geladeira7"),
             role: UserRole.Tourist,
-        } 
+        }
     });
     console.log(tourist3);
 
@@ -169,7 +169,7 @@ async function main() {
             email: "acegomes27@gmail.com",
             password: await hashPassword("geladeira8"),
             role: UserRole.Tourist,
-        } 
+        }
     });
     console.log(tourist4);
 
@@ -180,7 +180,7 @@ async function main() {
             email: "wesner@gmail.com",
             password: await hashPassword("geladeira9"),
             role: UserRole.Tourist,
-        } 
+        }
     });
     console.log(tourist5);
 
@@ -253,10 +253,10 @@ async function main() {
             endDate: new Date("2023-05-02, 18:00:00"),
             UsersOnTrips: {
                 create: [
-                    {userId: tourist1.id},
-                    {userId: tourist2.id},
-                    {userId: tourist3.id},
-                    {userId: guide1.id},                        
+                    { userId: tourist1.id },
+                    { userId: tourist2.id },
+                    { userId: tourist3.id },
+                    { userId: guide1.id },
                 ]
             },
 
@@ -269,17 +269,17 @@ async function main() {
 
     const trip2 = await prisma.trip.create({
         data: {
-            name: "Compras em NYC",
-            place: "5th Avenue e arredores",
+            name: "Passeio Livre nas Cataratas do Iguaçu",
+            place: "Cataratas do Iguaçu",
             startDate: new Date("2021-10-01, 10:00:00"),
             endDate: new Date("2021-10-01, 18:00:00"),
             UsersOnTrips: {
                 create: [
-                    {userId: tourist3.id},
-                    {userId: tourist4.id},
-                    {userId: tourist5.id},
-                    {userId: guide1.id}, 
-                    {userId: guide2.id},    
+                    { userId: tourist3.id },
+                    { userId: tourist4.id },
+                    { userId: tourist5.id },
+                    { userId: guide1.id },
+                    { userId: guide2.id },
                 ]
             },
 
@@ -292,16 +292,16 @@ async function main() {
 
     const trip3 = await prisma.trip.create({
         data: {
-            name: "Compras em NYC",
-            place: "5th Avenue e arredores",
+            name: "Passeio Livre no Magic Kingdom",
+            place: "Disney World - Orlando",
             startDate: new Date("2021-10-01, 10:00:00"),
             endDate: new Date("2021-10-01, 18:00:00"),
             UsersOnTrips: {
                 create: [
-                    {userId: tourist1.id},
-                    {userId: tourist3.id},
-                    {userId: tourist5.id},
-                    {userId: guide3.id},     
+                    { userId: tourist1.id },
+                    { userId: tourist3.id },
+                    { userId: tourist5.id },
+                    { userId: guide3.id },
                 ]
             },
 

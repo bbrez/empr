@@ -16,37 +16,44 @@ export namespace TripService {
 
     export const userTrips = async (user: User) => {
         let trips: any[] = [];
-        if (user.role == 'Admin' || user.role == 'Manager') {
-            if (!user.companyId) throw new Error('User has no company');
 
-            trips = await prisma.trip.findMany({
-                where: {
-                    companyId: user.companyId,
-                },
-            });
+        switch (user.role) {
+            case 'Admin':
+                trips = await prisma.trip.findMany({});
+                break;
 
-        } else {
-            const today = new Date();
+            case 'Manager':
+                if (!user.companyId) throw new Error('User has no company');
 
-            trips = await prisma.trip.findMany({
-                where: {
-                    UsersOnTrips: {
-                        some: {
-                            userId: user.id,
+                trips = await prisma.trip.findMany({
+                    where: {
+                        companyId: user.companyId,
+                    },
+                });
+                break;
+
+            default:
+                const today = new Date();
+
+                trips = await prisma.trip.findMany({
+                    where: {
+                        UsersOnTrips: {
+                            some: {
+                                userId: user.id,
+                            }
+                        },
+                        startDate: {
+                            gte: today,
                         }
                     },
-                    startDate: {
-                        gte: today,
-                    }
-                },
-                orderBy: {
-                    startDate: 'asc',
-                },
-            });
+                    orderBy: {
+                        startDate: 'asc',
+                    },
+                });
         }
-
         return trips;
     }
+
 
     export const tripById = async (id: number) => {
         const trip = await prisma.trip.findUnique({
@@ -70,7 +77,7 @@ export namespace TripService {
         return trip;
     }
 
-    export const activateTrip = async (id: number, area: {center: {lat: number, lng: number}, radius: number}, meeting: {lat: number, lng: number}) => {
+    export const activateTrip = async (id: number, area: { center: { lat: number, lng: number }, radius: number }, meeting: { lat: number, lng: number }) => {
         const trip = await prisma.trip.update({
             where: {
                 id,

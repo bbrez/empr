@@ -44,8 +44,8 @@ export const requireRole = (minRole: UserRole) => (req: Request, res: Response, 
     }
 
     logger.info("✅ Authorization successful");
-    logger.info("⬆️  Min role: ", minRole);
-    logger.info("⬆️  User role: ", userRole);
+    logger.info(`⬆️  Min role: ${minRole}`);
+    logger.info(`⬆️  User role: ${userRole}`);
 
     next();
     return;

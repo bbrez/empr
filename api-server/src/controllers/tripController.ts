@@ -51,7 +51,8 @@ export namespace TripController {
 
   export const userTrips = async (req: Request, res: Response) => {
     const user = res.locals.user;
-    const trips = await TripService.userTrips(user.id);
+    const trips = await TripService.userTrips(user);
+    console.log(trips);
 
     return res.status(200).json(trips);
   };

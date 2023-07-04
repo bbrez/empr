@@ -34,7 +34,10 @@ export const socketLogger = winston.createLogger({
         new winston.transports.Console({
             format: winston.format.combine(
                 winston.format.colorize(),
-                winston.format.simple(),
+                winston.format.timestamp({
+                    format: 'YYYY-MM-DD HH:mm:ss'
+                }),
+                winston.format.printf(info => `[${info.timestamp}] (${info.level}): ${info.message}`)
             )
         }),
 
