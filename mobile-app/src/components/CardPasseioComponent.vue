@@ -30,10 +30,10 @@ const formatDate = (date: string) => new Date(date).toLocaleString();
 
       <div class="row mt-3">
         <div class="col">
-          <a :href="'/'" class="btn btn-primary w-100">Detalhes</a>
+          <a :href="'/trips/' + passeio.id" class="btn btn-primary w-100">Detalhes</a>
         </div>
         <div v-if="passeio.isActivated" class="col">
-          <a href="/" class="btn btn-primary w-100">Entrar</a>
+          <a :href="'/trips/' + passeio.id + '/map'" class="btn btn-primary w-100">Entrar</a>
         </div>
       </div>
     </div>

@@ -70,6 +70,14 @@ export const api = {
 
     async register(trip: any) {
       return api_client.post('/trips', trip);
+    },
+
+    async byId(id: any) {
+      return api_client.get(`/trips/${id}`);
+    },
+
+    async addUser(tripId: any, userEmail: any) {
+      return api_client.post(`/trips/${tripId}/users`, { email: userEmail });
     }
   },
 

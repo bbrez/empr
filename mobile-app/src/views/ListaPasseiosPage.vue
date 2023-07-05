@@ -52,8 +52,6 @@ const logout = () => {
   <ion-page id="main-content">
     <div class="overflow-auto">
       <topbar :title="headerTitle"></topbar>
-      <a href="/trips/1/map" class="btn btn-danger">Debug</a>
-
       <div class="container mt-3">
         <div v-if="authStore.eqRole('Manager')" class="my-3">
           <card-empresa :company="empresa"></card-empresa>
