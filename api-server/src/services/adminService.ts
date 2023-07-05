@@ -22,6 +22,17 @@ export namespace AdminService {
         return users;
     }
 
+    export const companyList = async () => {
+        const companies = await prisma.company.findMany({
+            select: {
+                id: true,
+                name: true,
+            }
+        });
+
+        return companies;
+    }
+
     export const tripList = async (page: number) => {
         const trips = await prisma.trip.findMany({
             skip: (page - 1) * 100,

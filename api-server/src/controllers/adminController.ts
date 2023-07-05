@@ -9,6 +9,11 @@ export namespace AdminController {
         res.status(200).json(users);
     }
 
+    export const companyList = async (req: Request, res: Response) => {
+        const companies = await AdminService.companyList();
+        res.status(200).json(companies);
+    }
+
     export const tripList = async (req: Request, res: Response) => {
         req.query.page = req.query.page || "1";
         const page = parseInt(req.query.page as string);
