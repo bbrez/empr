@@ -3,12 +3,13 @@ import { FormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
 import { IonicModule } from "@ionic/angular";
 import { LoginService } from "../services/login.service";
+import { CommonModule } from "@angular/common";
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
   standalone: true,
-  imports: [IonicModule, FormsModule],
+  imports: [IonicModule, CommonModule, FormsModule],
 })
 export class RegisterPage {
   error: string = '';
@@ -20,16 +21,17 @@ export class RegisterPage {
     email: '',
     password: '',
   }
-  
+
   confirmPassword = '';
 
-  constructor(private router: Router, private loginService: LoginService) {}
+  constructor(private router: Router, private loginService: LoginService) { }
 
-  submitForm() {
-    if(this.user.password != this.confirmPassword) return;
-    
-      if(this.loginService.register(this.user)) {
-        this.router.navigate(['/login']);
-      }
+  onSubmit() {
+    console.log(this.user);
+    // if (this.user.password != this.confirmPassword) return;
+
+    // if (this.loginService.register(this.user)) {
+    //   this.router.navigate(['/login']);
+    // }
   }
 }

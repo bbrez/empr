@@ -1,0 +1,73 @@
+<!-- <div class="offcanvas offcanvas-start show" tabindex="-1" id="offcanvas">
+  <div class="offcanvas-header">
+    <span class="logo">Safe Travels</span>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div class="row">
+      <div class="col-12 mb-3">
+        <h5 class="text-center">Olá, {{loginService.user?.firstName}}</h5>
+      </div>
+
+      <div class="col-12 mb-3">
+        <a class="btn btn-primary w-100" routerLink="/lista-passeios">Meus Passeios</a>
+      </div>
+
+      <div class="col-12 mb-3" *ngIf="loginService.eqRole('Admin')">
+        <a class="btn btn-primary w-100" routerLink="/lista-passeios">Empresas</a>
+      </div>
+
+      <div class="col-12 my-3">
+        <button class="btn btn-outline-primary w-100" (click)="preferencesService.toggleTheme()">
+          Trocar tema
+        </button>
+      </div>
+
+      <div class="col-12 mt-3">
+        <button class="btn btn-danger w-100" (click)="loginService.logout()">SAIR</button>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<ion-menu contentId="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Menu</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <div class="container">
+      <div class="row">
+        <div class="col-12 my-3">
+          <h5 class="text-center">Olá, {{loginService.user?.firstName}}</h5>
+        </div>
+
+        <div class="col-12 mb-3">
+          <a class="btn w-100" [class]="router.url == '/lista-passeio' ? 'btn-primary' : 'btn-outline-primary'"
+            href="/lista-passeios">Meus Passeios</a>
+        </div>
+
+        <div class="col-12 mb-3" *ngIf="loginService.eqRole('Admin')">
+          <a class="btn w-100" [class]="router.url == '/admin-empresas' ? 'btn-primary' : 'btn-outline-primary'"
+            href="/admin-empresas">Empresas</a>
+        </div>
+
+        <div class="col-12 mb-3" *ngIf="loginService.eqRole('Admin')">
+          <a class="btn w-100" [class]="router.url == '/admin-usuarios' ? 'btn-primary' : 'btn-outline-primary'"
+            href="/lista-passeios">Usuários</a>
+        </div>
+
+        <div class="col-12 my-3">
+          <button class="btn btn-outline-primary w-100" (click)="preferencesService.toggleTheme()">
+            Trocar tema
+          </button>
+        </div>
+
+        <div class="col-12 mt-3">
+          <button class="btn btn-danger w-100" (click)="loginService.logout()">Sair</button>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-menu>

@@ -1,51 +1,72 @@
 <div class="container d-flex flex-column justify-content-center vh-100 p-4">
-  <h1 class="text-center fst-italic">
+  <div class="logo">
     Safe Travels
-  </h1>
-  <div class="row justify-content-center border border-primary rounded p-3">
-    <h3 class="col-12 text-center">
-      Registrar
-    </h3>
-    <div class="col-12">
-    
-        <div class="mb-3">
-          <label for="inputFirstName" class="form-label">Nome</label>
-          <input type="text" id="inputFirstName" class="form-control" [(ngModel)]="user.firstName">
-        </div>
-        
-        <div class="mb-3">
-          <label for="inputLastName" class="form-label">Sobrenome</label>
-          <input type="text" id="inputLastName" class="form-control" [(ngModel)]="user.lastName">
-        </div>
-        
-        <div class="mb-3">
-          <label for="inputPhone" class="form-label">Telefone</label>
-          <input type="text" id="inputPhone" class="form-control" [(ngModel)]="user.phone">
-        </div>
-        
-        <div class="mb-3">
-          <label for="inputEmail" class="form-label">Email</label>
-          <input type="email" id="inputEmail" class="form-control" [(ngModel)]="user.email">
-        </div>
+  </div>
+  <div>
+    <div class="justify-content-center border border-primary rounded p-3">
+      <h3 class="text-center">
+        Registrar
+      </h3>
+      <form class="needs-validation" (ngSubmit)="onSubmit()" #registerForm="ngForm">
+        <div class="row">
+          <div class="col-12 col-md-6 mb-3">
+            <label for="inputFirstName" class="form-label">Nome</label>
+            <input type="text" name="firstName" id="inputFirstName" class="form-control" [(ngModel)]="user.firstName"
+              required #inpFirstName="ngModel">
+            <small *ngIf="(inpFirstName.dirty || inpFirstName.touched) && user.firstName.length == 0"
+              class="text-danger">
+              Campo obrigatório
+            </small>
+          </div>
 
-        <div class="mb-3">
-          <label for="inputPassword" class="form-label">Senha</label>
-          <input type="password" id="inputPassword" class="form-control" [(ngModel)]="user.password">
-        </div>
-        
-        <div class="mb-3">
-          <label for="inputConfirmPassword" class="form-label">Confirmar Senha</label>
-          <input type="password" id="inputConfirmPassword" class="form-control" [(ngModel)]="confirmPassword">
-        </div>
-     
-        <button type="submit" class="btn btn-primary me-3" (click)="submitForm()">
-          Registrar
-        </button>
-        <a href="/login" class="btn btn-outline-warning">
-          Voltar
-        </a>
+          <div class="col-12 col-md-6 mb-3">
+            <label for="inputLastName" class="form-label">Sobrenome</label>
+            <input type="text" name="lastName" id="inputLastName" class="form-control" [(ngModel)]="user.lastName"
+              required>
+          </div>
 
-      {{ error }}
+          <div class="col-12 col-md-6 mb-3">
+            <label for="inputPhone" class="form-label">Telefone</label>
+            <input type="text" name="phone" id="inputPhone" class="form-control" [(ngModel)]="user.phone" required>
+          </div>
+
+          <div class="col-12 col-md-6 mb-3">
+            <label for="inputEmail" class="form-label">Email</label>
+            <input type="email" name="email" id="inputEmail" class="form-control" [(ngModel)]="user.email" required>
+          </div>
+
+          <div class="col-12 col-md-6 mb-3">
+            <label for="inputPassword" class="form-label">Senha</label>
+            <input type="password" name="password" id="inputPassword" class="form-control" [(ngModel)]="user.password"
+              required>
+          </div>
+
+          <div class="col-12 col-md-6 mb-3">
+            <label for="inputConfirmPassword" class="form-label">Confirmar Senha</label>
+            <input type="password" name="passConfirm" id="inputConfirmPassword" class="form-control"
+              [(ngModel)]="confirmPassword" required #pwConfirm="ngModel">
+            <small *ngIf="(pwConfirm.dirty || pwConfirm.touched) && user.password != confirmPassword"
+              class="text-danger">
+              Senhas não conferem
+            </small>
+          </div>
+
+          <div class="col-12">
+            <div class="row">
+              <div class="col-6">
+                <button type="submit" class="btn btn-lg btn-primary w-100" [disabled]="registerForm.invalid">
+                  Registrar
+                </button>
+              </div>
+              <div class="col-6">
+                <a href="/login" class="btn btn-lg btn-outline-warning w-100">
+                  Voltar
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </div>

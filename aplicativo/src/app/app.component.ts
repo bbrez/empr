@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
-import {HttpClientModule} from "@angular/common/http";
+import { HttpClientModule } from "@angular/common/http";
+import { PreferencesService } from './services/preferences.service';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +10,10 @@ import {HttpClientModule} from "@angular/common/http";
   standalone: true,
   imports: [IonicModule],
 })
-export class AppComponent {
-  constructor() {}
+export class AppComponent implements OnInit {
+  constructor(private preferencesService: PreferencesService) { }
+
+  ngOnInit(): void {
+    this.preferencesService.checkTheme();
+  }
 }

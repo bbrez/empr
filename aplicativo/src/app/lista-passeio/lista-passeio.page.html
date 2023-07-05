@@ -1,23 +1,52 @@
-<nav class="navbar sticky-top bg-body-tertiary">
+<!-- <nav class="navbar sticky-top bg-body-tertiary">
   <div class="container-fluid">
+    <button class="navbar-toggler">
+      <i class="fa-solid fa-bars"></i>
+    </button>
     <a href="/lista-passeio" class="navbar-brand">
       Meus Passeios
     </a>
   </div>
-</nav>
+</nav> -->
+<div class="ion-page" id="main-content">
+  <app-sidebar></app-sidebar>
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>Meus Passeios</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <div class="container mt-3">
+      <ng-container *ngIf="passeios.length > 0; else semPasseios">
+        <div class="my-3" *ngFor="let passeio of passeios">
+          <app-card-passeio [passeio]="passeio">
+          </app-card-passeio>
+        </div>
+      </ng-container>
+      <ng-template #semPasseios>
+        <div class="row">
+          <div class="col-12 my-5">
+            <h3 class="text-center">Você ainda não possui passeios</h3>
+          </div>
+          <div class="col-12">
+            <h3 class="text-center">
+              <i class="fa-regular fa-face-frown"></i>
+            </h3>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </ion-content>
 
-<ng-container *ngIf="passeios.length > 0">
-  <div class="container mt-3">
-    <app-card-passeio *ngFor="let passeio of passeios" [passeio]="passeio">
-    </app-card-passeio>
+
+  <div class="fab" *ngIf="loginService.minRole('Manager')">
+    <a href="/criar-passeio">
+      <button class="button">
+        <i class="fa-solid fa-add"></i>
+      </button>
+    </a>
   </div>
-</ng-container>
-
-<button class="btn btn-danger" (click)="loginService.sair()">SAIR</button>
-<div class="fab" *ngIf="loginService.minRole('Manager')">
-  <a href="/criar-passeio">
-    <button class="button">
-      <i class="fa-solid fa-add"></i>
-    </button>
-  </a>
 </div>

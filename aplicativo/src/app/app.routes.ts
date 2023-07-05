@@ -37,5 +37,9 @@ export const routes: Routes = [
   {
     path: 'manager-passeio/:id',
     loadComponent: () => import('./manager-passeio/manager-passeio.page').then((m) => m.ManagerPasseioPage),
+  },
+  {
+    path: 'admin-empresas',
+    loadComponent: () => import('./admin-empresas/admin-empresas.page').then( m => m.AdminEmpresasPage)
   }
 ];

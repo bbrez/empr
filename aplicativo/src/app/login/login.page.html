@@ -1,30 +1,32 @@
 <div class="container d-flex flex-column justify-content-center vh-100 p-4">
-  <h1 class="text-center fst-italic">
+  <div class="logo">
     Safe Travels
-  </h1>
+  </div>
   <div class="row justify-content-center border border-primary rounded p-3">
     <h3 class="col-12 text-center">
       Login
     </h3>
-    <div class="col-12">
+    <form class="col-12" (ngSubmit)="onSubmit()" #loginForm="ngForm">
       <div class="mb-3">
         <label for="inputEmail" class="form-label">Email</label>
-        <input type="email" id="inputEmail" class="form-control" [(ngModel)]="user.email">
+        <input type="email" name="email" id="inputEmail" class="form-control" [(ngModel)]="user.email" required>
       </div>
 
       <div class="mb-3">
         <label for="inputPassword" class="form-label">Senha</label>
-        <input type="password" id="inputPassword" class="form-control" [(ngModel)]="user.password">
+        <input type="password" name="password" id="inputPassword" class="form-control" [(ngModel)]="user.password"
+          required>
       </div>
 
-      <button type="submit" class="btn btn-primary me-3" (click)="submitForm()">
-        Entrar
+      <button type="submit" class="btn btn-primary me-3" [disabled]="loginForm.invalid || carregando">
+        <span *ngIf="!carregando">Entrar</span>
+        <span *ngIf="carregando" class="spinner-border spinner-border-sm"></span>
       </button>
       <a href="/register" class="btn btn-outline-primary">
         Registrar
       </a>
 
       {{ error }}
-    </div>
+    </form>
   </div>
 </div>

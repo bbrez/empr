@@ -20,9 +20,10 @@ export class LoginService {
     return userInfo != null;
   }
 
-  logIn(user: UserLoginPayload) {
-    this.http.post(environment.api + '/users/login', user).subscribe({
+  login(user: UserLoginPayload) {
+    return this.http.post(environment.api + '/users/login', user).subscribe({
       next: (user) => {
+        console.log(user);
         (user as any).message = undefined;
         localStorage.setItem('user', JSON.stringify(user));
       },
@@ -41,10 +42,10 @@ export class LoginService {
         console.error(err);
         return false
       }
-    })
+    });
   }
 
-  sair() {
+  logout() {
     localStorage.removeItem('user');
     this.router.navigate(['/login']);
   }
@@ -65,9 +66,15 @@ export class LoginService {
   }
 
   minRole(role: string) {
-    const userInfo = localStorage.getItem('user');
+    const userInfo = this.user?.role;
     if (!userInfo) return false;
-    return this.roleToInt(JSON.parse(userInfo)?.user?.role) >= this.roleToInt(role);
+    return this.roleToInt(userInfo) >= this.roleToInt(role);
+  }
+
+  eqRole(role: string) {
+    const userInfo = this.user?.role;
+    if (!userInfo) return false;
+    return userInfo === role;
   }
 
   get user() {
