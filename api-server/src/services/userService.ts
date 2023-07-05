@@ -63,4 +63,24 @@ export namespace UserService {
 
         return { token, user: { ...user, password: undefined } };
     }
+
+    export const getCompanyInfo = async (companyId: any) => {
+        if (!companyId) throw new Error('User has no company');
+
+        const company = await prisma.company.findUnique({
+            where: {
+                id: companyId,
+            },
+            include: {
+                _count: {
+                    select: {
+                        users: true,
+                        trips: true,
+                    }
+                }
+            }
+        });
+
+        return company;
+    }
 }

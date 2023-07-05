@@ -20,6 +20,10 @@ router.post("/companies", requireAuth, requireRole(UserRole.Admin), (req, res) =
     AdminController.createCompany(req, res);
 });
 
+router.get("/companies/mine", requireAuth, requireRole(UserRole.Manager), (req, res) => {
+    UserController.companyInfo(req, res);
+});
+
 router.post("/users", requireAuth, requireRole(UserRole.Admin), (req, res) => {
     UserController.createUserWithRole(req, res);
 });
