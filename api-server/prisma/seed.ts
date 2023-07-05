@@ -213,7 +213,7 @@ async function main() {
 
     const company2 = await prisma.company.create({
         data: {
-            name: "Empresa de Turismo",
+            name: "Frontur",
             users: {
                 connect: [
                     { id: admin2.id },
