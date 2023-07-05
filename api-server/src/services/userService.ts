@@ -41,6 +41,19 @@ export namespace UserService {
             where: {
                 email,
             },
+            include: {
+                company: {
+                    select: {
+                        name: true,
+                        _count: {
+                            select: {
+                                users: true,
+                                trips: true,
+                            }
+                        }
+                    }
+                }
+            }
         });
 
         return user;
