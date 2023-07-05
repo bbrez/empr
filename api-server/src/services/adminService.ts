@@ -39,6 +39,16 @@ export namespace AdminService {
         return companies;
     }
 
+    export const createCompany = async (name: string) => {
+        const company = await prisma.company.create({
+            data: {
+                name,
+            },
+        });
+
+        return company;
+    }
+
     export const tripList = async (page: number) => {
         const trips = await prisma.trip.findMany({
             skip: (page - 1) * 100,

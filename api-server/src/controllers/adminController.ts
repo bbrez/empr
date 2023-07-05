@@ -14,6 +14,12 @@ export namespace AdminController {
         res.status(200).json(companies);
     }
 
+    export const createCompany = async (req: Request, res: Response) => {
+        const { name } = req.body;
+        const company = await AdminService.createCompany(name);
+        res.status(201).json(company);
+    }
+
     export const tripList = async (req: Request, res: Response) => {
         req.query.page = req.query.page || "1";
         const page = parseInt(req.query.page as string);
