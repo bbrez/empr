@@ -27,6 +27,12 @@ export namespace AdminService {
             select: {
                 id: true,
                 name: true,
+                _count: {
+                    select: {
+                        users: true,
+                        trips: true,
+                    }
+                }
             }
         });
 
