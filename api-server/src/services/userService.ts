@@ -21,9 +21,17 @@ export namespace UserService {
     export const createUserWithRole = async (user: CreateUserPayload & { role: UserRole }) => {
         user.password = await hashPassword(user.password);
 
-        const createdUser = await prisma.user.create({
-            data: user,
-        });
+        let createdUser = await prisma.user.create({
+            data: {
+                ...user,
+                companyId: undefined,
+                company: !!user.companyId ? {
+                    connect: {
+                        id: user.companyId,
+                    }
+                } : undefined,
+            }
+        })
 
         return { ...createdUser, password: undefined };
     }

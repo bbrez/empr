@@ -3,7 +3,7 @@ import { UserService } from "../services/userService";
 
 export namespace UserController {
     export const createUser = async (req: Request, res: Response) => {
-        const { firstName, lastName, email, password, phoneNumber} = req.body;
+        const { firstName, lastName, email, password, phoneNumber } = req.body;
 
         if (!firstName || !lastName || !email || !password) {
             res.status(400).json({ error: "Missing required fields" });
@@ -24,12 +24,14 @@ export namespace UserController {
     }
 
     export const createUserWithRole = async (req: Request, res: Response) => {
-        const { firstName, lastName, email, password, role } = req.body;
+        const { firstName, lastName, email, password, role, company } = req.body;
 
         if (!firstName || !lastName || !email || !password || !role) {
             res.status(400).json({ error: "Missing required fields" });
             return;
         }
+
+        const companyId = company ? company.id : null;
 
         const user = await UserService.createUserWithRole({
             firstName,
@@ -37,7 +39,7 @@ export namespace UserController {
             email,
             password,
             role,
-            companyId: null,
+            companyId,
             phoneNumber: null,
         });
 
